@@ -1,0 +1,9 @@
+<div class="p-6 rounded-2xl bg-background">
+	<div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4" [ngClass]="bgColorClass">
+		<svg class="w-7 h-7" [ngClass]="textColorClass" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="icon"/>
+		</svg>
+	</div>
+	<h3 class="text-xl font-semibold text-text mb-2">{{ title }}</h3>
+	<p class="text-text-secondary">{{ description }}</p>
+</div>

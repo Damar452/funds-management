@@ -1,0 +1,14 @@
+<div class="min-h-screen bg-background">
+	@if (user$ | async; as user) {
+		<app-header [showLogin]="false" [userName]="user.name" [userEmail]="user.email" />
+		<div class="max-w-7xl mx-auto px-4 py-8">
+			<h1 class="text-3xl font-bold text-text">Dashboard</h1>
+			<p class="text-text-secondary mt-2">Bienvenido al panel de gestión de fondos</p>
+		</div>
+	} @else {
+		<app-header [showLogin]="false" />
+		<div class="max-w-7xl mx-auto px-4 py-8">
+			<p class="text-text-secondary">Cargando...</p>
+		</div>
+	}
+</div>
