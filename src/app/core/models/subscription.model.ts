@@ -3,6 +3,11 @@ export enum NotificationMethod {
 	SMS = 'sms',
 }
 
+export const NOTIFICATION_METHOD_LABELS: Record<NotificationMethod, string> = {
+	[NotificationMethod.EMAIL]: 'correo electrónico',
+	[NotificationMethod.SMS]: 'SMS',
+};
+
 export enum SubscriptionStatus {
 	ACTIVE = 'active',
 	CANCELLED = 'cancelled',

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SubscriptionService, FundService, ToastService } from '@core';
-import { FundSubscription, SubscriptionStatus, ViewMode } from '@core/models';
+import { FundSubscription, SubscriptionStatus, ViewMode, NOTIFICATION_METHOD_LABELS } from '@core/models';
 import { SearchInputComponent, ViewToggleComponent, DataTableComponent, TableColumn, ConfirmModalComponent } from '@shared';
 import { SUBSCRIPTIONS_TABLE_COLUMNS } from './subscriptions.consts';
 
@@ -74,8 +74,7 @@ export class SubscriptionsComponent {
 	confirmCancelSubscription(): void {
 		if (!this.subscriptionToCancel) return;
 		
-		const fundName = this.getFundName(this.subscriptionToCancel.fundId);
-		const notificationText = this.subscriptionToCancel.notificationMethod === 'email' ? 'correo electrónico' : 'SMS';
+		const notificationText = NOTIFICATION_METHOD_LABELS[this.subscriptionToCancel.notificationMethod];
 		
 		this.subscriptionService.cancelSubscription(this.subscriptionToCancel.id).subscribe((result) => {
 			if (result.success) {

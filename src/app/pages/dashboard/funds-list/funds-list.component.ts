@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { FundService, SubscriptionService, ToastService } from '@core';
-import { Fund, ViewMode } from '@core/models';
+import { Fund, ViewMode, NOTIFICATION_METHOD_LABELS } from '@core/models';
 import { FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInputComponent, SubscribeModalComponent, SubscribeData } from '@shared';
 
 @Component({
@@ -47,7 +47,7 @@ export class FundsListComponent {
 	}
 
 	onConfirmSubscription(data: SubscribeData): void {
-		const notificationText = data.notificationMethod === 'email' ? 'correo electrónico' : 'SMS';
+		const notificationText = NOTIFICATION_METHOD_LABELS[data.notificationMethod];
 		this.subscriptionService
 			.subscribe(data.fund.id, data.fund.minAmount, data.notificationMethod)
 			.subscribe((result) => {
