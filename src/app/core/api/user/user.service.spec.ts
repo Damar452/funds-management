@@ -34,7 +34,7 @@ describe('UserService', () => {
 				expect(user).toEqual(MOCK_USER);
 			});
 
-			const req = httpMock.expectOne('/data/user.json');
+			const req = httpMock.expectOne('data/user.json');
 			expect(req.request.method).toBe('GET');
 			req.flush(MOCK_USER);
 		});
@@ -42,7 +42,7 @@ describe('UserService', () => {
 		it('should update user$ observable after loading', () => {
 			service.loadUser().subscribe();
 
-			const req = httpMock.expectOne('/data/user.json');
+			const req = httpMock.expectOne('data/user.json');
 			req.flush(MOCK_USER);
 
 			service.user$.subscribe((user) => {
@@ -58,7 +58,7 @@ describe('UserService', () => {
 
 		it('should return user after loading', () => {
 			service.loadUser().subscribe();
-			const req = httpMock.expectOne('/data/user.json');
+			const req = httpMock.expectOne('data/user.json');
 			req.flush(MOCK_USER);
 
 			expect(service.getUser()).toEqual(MOCK_USER);
@@ -68,7 +68,7 @@ describe('UserService', () => {
 	describe('updateBalance', () => {
 		it('should update user balance', () => {
 			service.loadUser().subscribe();
-			const req = httpMock.expectOne('/data/user.json');
+			const req = httpMock.expectOne('data/user.json');
 			req.flush(MOCK_USER);
 
 			service.updateBalance(600000);

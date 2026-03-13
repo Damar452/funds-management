@@ -17,7 +17,7 @@ export class UserService {
 	readonly user$ = this.userSubject.asObservable();
 
 	loadUser(): Observable<User> {
-		return this.http.get<User>('/data/user.json').pipe(
+		return this.http.get<User>('data/user.json').pipe(
 			tap((user) => this.userSubject.next(user))
 		);
 	}

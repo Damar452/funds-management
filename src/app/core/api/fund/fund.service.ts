@@ -18,7 +18,7 @@ export class FundService {
 	readonly funds$ = this.fundsSubject.asObservable();
 
 	loadFunds(): Observable<Fund[]> {
-		return this.http.get<Fund[]>('/data/funds.json').pipe(
+		return this.http.get<Fund[]>('data/funds.json').pipe(
 			tap((funds) => this.fundsSubject.next(funds))
 		);
 	}
