@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../../models';
@@ -12,12 +13,13 @@ import { User } from '../../models';
 })
 export class UserService {
 	private readonly http = inject(HttpClient);
+	private readonly baseHref = inject(APP_BASE_HREF, { optional: true }) || '/';
 	private readonly userSubject = new BehaviorSubject<User | null>(null);
 
 	readonly user$ = this.userSubject.asObservable();
 
 	loadUser(): Observable<User> {
-		return this.http.get<User>('data/user.json').pipe(
+		return this.http.get<User>(`${this.baseHref}data/user.json`).pipe(
 			tap((user) => this.userSubject.next(user))
 		);
 	}

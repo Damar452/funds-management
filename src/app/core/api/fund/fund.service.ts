@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Fund } from '../../models';
@@ -13,12 +14,13 @@ import { Fund } from '../../models';
 })
 export class FundService {
 	private readonly http = inject(HttpClient);
+	private readonly baseHref = inject(APP_BASE_HREF, { optional: true }) || '/';
 	private readonly fundsSubject = new BehaviorSubject<Fund[]>([]);
 
 	readonly funds$ = this.fundsSubject.asObservable();
 
 	loadFunds(): Observable<Fund[]> {
-		return this.http.get<Fund[]>('data/funds.json').pipe(
+		return this.http.get<Fund[]>(`${this.baseHref}data/funds.json`).pipe(
 			tap((funds) => this.fundsSubject.next(funds))
 		);
 	}
