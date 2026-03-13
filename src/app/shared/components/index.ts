@@ -10,3 +10,4 @@ export * from './data-table/data-table.component';
 export * from './subscribe-modal/subscribe-modal.component';
 export * from './toast/toast.component';
 export * from './confirm-modal/confirm-modal.component';
+export * from './timeline/timeline.component';

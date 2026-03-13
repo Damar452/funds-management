@@ -9,6 +9,7 @@ import { ViewMode } from '@core/models';
 })
 export class ViewToggleComponent {
 	@Input() currentView: ViewMode = ViewMode.CARDS;
+	@Input() showTimeline = false;
 	@Output() viewChange = new EventEmitter<ViewMode>();
 
 	readonly ViewMode = ViewMode;

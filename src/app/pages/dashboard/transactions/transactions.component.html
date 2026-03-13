@@ -3,7 +3,7 @@
 		<h2 class="text-xl sm:text-2xl font-bold text-text">Historial de Transacciones</h2>
 		<div class="flex items-center gap-2 sm:gap-4">
 			<app-search-input class="flex-1 sm:flex-none" placeholder="Buscar..." (search)="onSearch($event)" />
-			<app-view-toggle [currentView]="viewMode" (viewChange)="onViewChange($event)" />
+			<app-view-toggle [currentView]="viewMode" [showTimeline]="true" (viewChange)="onViewChange($event)" />
 		</div>
 	</div>
 	
@@ -41,6 +41,8 @@
 					<p class="text-text-secondary">No hay transacciones registradas</p>
 				</div>
 			}
+		} @else if (viewMode === ViewMode.TIMELINE) {
+			<app-timeline [transactions]="filteredTransactions" [getFundName]="getFundName.bind(this)" />
 		} @else {
 			<app-data-table [columns]="columns" [data]="filteredTransactions" trackBy="id" emptyMessage="No hay transacciones registradas">
 				<ng-template #rowTemplate let-transaction>

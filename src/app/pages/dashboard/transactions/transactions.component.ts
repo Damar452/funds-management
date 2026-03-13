@@ -2,12 +2,12 @@ import { Component, inject } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { TransactionService, FundService } from '@core';
 import { Transaction, TransactionType, ViewMode } from '@core/models';
-import { DataTableComponent, TableColumn, SearchInputComponent, ViewToggleComponent } from '@shared';
+import { DataTableComponent, TableColumn, SearchInputComponent, ViewToggleComponent, TimelineComponent } from '@shared';
 
 @Component({
 	selector: 'app-transactions',
 	standalone: true,
-	imports: [AsyncPipe, CurrencyPipe, DatePipe, DataTableComponent, SearchInputComponent, ViewToggleComponent],
+	imports: [AsyncPipe, CurrencyPipe, DatePipe, DataTableComponent, SearchInputComponent, ViewToggleComponent, TimelineComponent],
 	templateUrl: './transactions.component.html',
 })
 export class TransactionsComponent {
