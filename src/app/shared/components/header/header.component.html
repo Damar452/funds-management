@@ -1,11 +1,23 @@
 <header class="bg-white shadow-sm">
 	<div class="mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-		<a routerLink="/" class="flex items-center gap-2">
-			<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-				<span class="text-white font-bold text-xl">B</span>
-			</div>
-			<span class="text-xl font-bold text-text">BTG Fondos</span>
-		</a>
+		<div class="flex items-center gap-3">
+			@if (showMenuButton) {
+				<button 
+					(click)="onMenuClick()"
+					class="md:hidden p-2 text-text-secondary hover:text-text hover:bg-background rounded-lg transition-colors"
+				>
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+					</svg>
+				</button>
+			}
+			<a routerLink="/" class="flex items-center gap-2">
+				<div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+					<span class="text-white font-bold text-xl">B</span>
+				</div>
+				<span class="text-xl font-bold text-text">BTG Fondos</span>
+			</a>
+		</div>
 
 		@if (showLogin) {
 			<a

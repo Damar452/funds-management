@@ -1,8 +1,8 @@
 <div>
-	<div class="flex items-center justify-between mb-6">
-		<h2 class="text-2xl font-bold text-text">Mis Suscripciones</h2>
-		<div class="flex items-center gap-4">
-			<app-search-input placeholder="Buscar suscripciones..." (search)="onSearch($event)" />
+	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+		<h2 class="text-xl sm:text-2xl font-bold text-text">Mis Suscripciones</h2>
+		<div class="flex items-center gap-2 sm:gap-4">
+			<app-search-input class="flex-1 sm:flex-none" placeholder="Buscar..." (search)="onSearch($event)" />
 			<app-view-toggle [currentView]="viewMode" (viewChange)="onViewChange($event)" />
 		</div>
 	</div>
@@ -11,31 +11,31 @@
 		@let activeSubscriptions = getActiveSubscriptions(subscriptions);
 		@if (activeSubscriptions.length > 0) {
 			@if (viewMode === ViewMode.CARDS) {
-				<div class="grid gap-4">
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 					@for (subscription of activeSubscriptions; track subscription.id) {
-						<div class="bg-white p-6 rounded-xl shadow-sm">
-							<div class="flex items-start justify-between">
-								<div class="flex-1">
-									<div class="flex items-center gap-3 mb-2">
+						<div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
+							<div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+								<div class="flex-1 min-w-0">
+									<div class="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
 										<span 
-											class="px-3 py-1 text-xs font-medium rounded-full"
+											class="px-2 sm:px-3 py-1 text-xs font-medium rounded-full flex-shrink-0"
 											[class]="getFundCategory(subscription.fundId) === 'FPV' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'"
 										>
 											{{ getFundCategory(subscription.fundId) }}
 										</span>
-										<h3 class="text-lg font-semibold text-text">{{ getFundName(subscription.fundId) }}</h3>
+										<h3 class="text-base sm:text-lg font-semibold text-text break-words">{{ getFundName(subscription.fundId) }}</h3>
 									</div>
-									<div class="flex items-center gap-6 text-sm text-text-secondary">
-										<span>Monto invertido: <strong class="text-text">{{ subscription.amount | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></span>
+									<div class="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-6 text-sm text-text-secondary">
+										<span>Monto: <strong class="text-text">{{ subscription.amount | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></span>
 										<span>Notificación: <strong class="text-text">{{ subscription.notificationMethod === 'email' ? 'Email' : 'SMS' }}</strong></span>
-										<span>Fecha: {{ subscription.createdAt | date:'dd/MM/yyyy' }}</span>
+										<span class="col-span-2 sm:col-span-1">Fecha: {{ subscription.createdAt | date:'dd/MM/yyyy' }}</span>
 									</div>
 								</div>
 								<button 
-									(click)="cancelSubscription(subscription.id)"
-									class="px-4 py-2 bg-secondary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+									(click)="openCancelModal(subscription)"
+									class="w-full sm:w-auto px-4 py-2 bg-secondary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity flex-shrink-0"
 								>
-									Cancelar Suscripción
+									Cancelar
 								</button>
 							</div>
 						</div>
@@ -58,7 +58,7 @@
 						<td class="px-6 py-4 text-sm text-text-secondary">{{ subscription.createdAt | date:'dd/MM/yyyy' }}</td>
 						<td class="px-6 py-4">
 							<button 
-								(click)="cancelSubscription(subscription.id)"
+								(click)="openCancelModal(subscription)"
 								class="px-4 py-2 bg-secondary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
 							>
 								Cancelar
@@ -83,3 +83,14 @@
 		}
 	}
 </div>
+
+<app-confirm-modal
+	[isOpen]="isConfirmModalOpen"
+	title="Cancelar Suscripción"
+	[message]="subscriptionToCancel ? 'Estás a punto de cancelar tu suscripción al fondo ' + getFundName(subscriptionToCancel.fundId) + '. El monto invertido será devuelto a tu saldo.' : ''"
+	confirmText="Sí, cancelar"
+	cancelText="No, mantener"
+	type="danger"
+	(confirm)="confirmCancelSubscription()"
+	(cancel)="closeCancelModal()"
+/>

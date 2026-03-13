@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -11,8 +11,14 @@ export class HeaderComponent {
 	@Input() showLogin = true;
 	@Input() userName: string | null = null;
 	@Input() userEmail: string | null = null;
+	@Input() showMenuButton = false;
+	@Output() menuClick = new EventEmitter<void>();
 
 	get displayName(): string {
 		return this.userName || this.userEmail || 'Usuario';
+	}
+
+	onMenuClick(): void {
+		this.menuClick.emit();
 	}
 }

@@ -1,13 +1,23 @@
 <div class="min-h-screen bg-background flex flex-col">
 	@if (user$ | async; as user) {
-		<app-header [showLogin]="false" [userName]="user.name" [userEmail]="user.email" />
+		<app-header 
+			[showLogin]="false" 
+			[userName]="user.name" 
+			[userEmail]="user.email"
+			[showMenuButton]="true"
+			(menuClick)="toggleSidebar()"
+		/>
 	} @else {
-		<app-header [showLogin]="false" />
+		<app-header 
+			[showLogin]="false"
+			[showMenuButton]="true"
+			(menuClick)="toggleSidebar()"
+		/>
 	}
 	
 	<div class="flex flex-1">
-		<app-sidebar />
-		<main class="flex-1 p-6">
+		<app-sidebar [isOpen]="isSidebarOpen" (close)="closeSidebar()" />
+		<main class="flex-1 p-4 md:p-6 w-full overflow-x-hidden">
 			<router-outlet />
 		</main>
 	</div>

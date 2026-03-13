@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 interface NavItem {
@@ -14,6 +14,17 @@ interface NavItem {
 	templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent {
+	@Input() isOpen = false;
+	@Output() close = new EventEmitter<void>();
+
+	onClose(): void {
+		this.close.emit();
+	}
+
+	onNavClick(): void {
+		this.close.emit();
+	}
+
 	readonly navItems: NavItem[] = [
 		{
 			label: 'Todos los Fondos',

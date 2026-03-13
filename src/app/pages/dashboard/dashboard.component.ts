@@ -14,6 +14,8 @@ export class DashboardComponent implements OnInit {
 	private readonly userService = inject(UserService);
 	private readonly fundService = inject(FundService);
 	readonly user$ = this.userService.user$;
+	
+	isSidebarOpen = false;
 
 	ngOnInit(): void {
 		this.loadInitialData();
@@ -22,5 +24,13 @@ export class DashboardComponent implements OnInit {
 	private loadInitialData(): void {
 		this.userService.loadUser().subscribe();
 		this.fundService.loadFunds().subscribe();
+	}
+
+	toggleSidebar(): void {
+		this.isSidebarOpen = !this.isSidebarOpen;
+	}
+
+	closeSidebar(): void {
+		this.isSidebarOpen = false;
 	}
 }

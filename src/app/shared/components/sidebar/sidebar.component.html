@@ -1,4 +1,28 @@
-<aside class="w-64 bg-white shadow-lg h-full">
+<!-- Mobile overlay -->
+@if (isOpen) {
+	<div class="fixed inset-0 bg-black/50 z-40 md:hidden" (click)="onClose()"></div>
+}
+
+<!-- Sidebar -->
+<aside 
+	class="fixed md:relative inset-y-0 left-0 z-50 w-64 bg-white shadow-lg h-full transform transition-transform duration-300 ease-in-out md:transform-none"
+	[class.translate-x-0]="isOpen"
+	[class.-translate-x-full]="!isOpen"
+	[class.md:translate-x-0]="true"
+>
+	<div class="flex items-center justify-between p-4 md:hidden border-b">
+		<div class="flex items-center gap-2">
+			<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+				<span class="text-white font-bold text-sm">B</span>
+			</div>
+			<span class="font-bold text-text">BTG Fondos</span>
+		</div>
+		<button (click)="onClose()" class="p-2 text-text-secondary hover:text-text rounded-lg">
+			<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+			</svg>
+		</button>
+	</div>
 	<nav class="p-4">
 		<ul class="space-y-2">
 			@for (item of navItems; track item.route) {
@@ -7,6 +31,7 @@
 						[routerLink]="item.route"
 						routerLinkActive="bg-primary/10 text-primary"
 						[routerLinkActiveOptions]="{ exact: true }"
+						(click)="onNavClick()"
 						class="flex items-center gap-3 px-4 py-3 rounded-lg text-text-secondary hover:bg-background transition-colors"
 					>
 						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,7 +1,7 @@
 @if (data.length > 0) {
-	<div class="bg-white rounded-xl shadow-sm overflow-hidden">
-		<table class="w-full">
-			<thead class="bg-background">
+	<div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+		<table class="w-full min-w-max">
+			<thead class="bg-gray-100">
 				<tr>
 					@for (column of columns; track column.key) {
 						<th 

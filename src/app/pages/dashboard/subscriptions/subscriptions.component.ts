@@ -1,20 +1,21 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { SubscriptionService, FundService } from '@core';
+import { SubscriptionService, FundService, ToastService } from '@core';
 import { FundSubscription, SubscriptionStatus, ViewMode } from '@core/models';
-import { SearchInputComponent, ViewToggleComponent, DataTableComponent, TableColumn } from '@shared';
+import { SearchInputComponent, ViewToggleComponent, DataTableComponent, TableColumn, ConfirmModalComponent } from '@shared';
 import { SUBSCRIPTIONS_TABLE_COLUMNS } from './subscriptions.consts';
 
 @Component({
 	selector: 'app-subscriptions',
 	standalone: true,
-	imports: [AsyncPipe, CurrencyPipe, DatePipe, RouterLink, SearchInputComponent, ViewToggleComponent, DataTableComponent],
+	imports: [AsyncPipe, CurrencyPipe, DatePipe, RouterLink, SearchInputComponent, ViewToggleComponent, DataTableComponent, ConfirmModalComponent],
 	templateUrl: './subscriptions.component.html',
 })
 export class SubscriptionsComponent {
 	private readonly subscriptionService = inject(SubscriptionService);
 	private readonly fundService = inject(FundService);
+	private readonly toastService = inject(ToastService);
 	
 	readonly subscriptions$ = this.subscriptionService.subscriptions$;
 	readonly SubscriptionStatus = SubscriptionStatus;
@@ -24,6 +25,8 @@ export class SubscriptionsComponent {
 	viewMode: ViewMode = ViewMode.CARDS;
 	readonly ViewMode = ViewMode;
 	
+	isConfirmModalOpen = false;
+	subscriptionToCancel: FundSubscription | null = null;
 
 	getFundName(fundId: number): string {
 		const fund = this.fundService.getFundById(fundId);
@@ -58,13 +61,29 @@ export class SubscriptionsComponent {
 		this.viewMode = view;
 	}
 
-	cancelSubscription(subscriptionId: number): void {
-		this.subscriptionService.cancelSubscription(subscriptionId).subscribe((result) => {
+	openCancelModal(subscription: FundSubscription): void {
+		this.subscriptionToCancel = subscription;
+		this.isConfirmModalOpen = true;
+	}
+
+	closeCancelModal(): void {
+		this.isConfirmModalOpen = false;
+		this.subscriptionToCancel = null;
+	}
+
+	confirmCancelSubscription(): void {
+		if (!this.subscriptionToCancel) return;
+		
+		const fundName = this.getFundName(this.subscriptionToCancel.fundId);
+		const notificationText = this.subscriptionToCancel.notificationMethod === 'email' ? 'correo electrónico' : 'SMS';
+		
+		this.subscriptionService.cancelSubscription(this.subscriptionToCancel.id).subscribe((result) => {
 			if (result.success) {
-				console.log('Cancelación exitosa:', result.message);
+				this.toastService.success('Cancelación exitosa', `Se enviará confirmación por ${notificationText}`);
 			} else {
-				console.error('Error en cancelación:', result.message);
+				this.toastService.error('Error en cancelación', result.message);
 			}
+			this.closeCancelModal();
 		});
 	}
 }

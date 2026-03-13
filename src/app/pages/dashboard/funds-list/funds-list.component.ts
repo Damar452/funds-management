@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { FundService, SubscriptionService } from '@core';
+import { FundService, SubscriptionService, ToastService } from '@core';
 import { Fund, ViewMode } from '@core/models';
 import { FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInputComponent, SubscribeModalComponent, SubscribeData } from '@shared';
 
@@ -13,6 +13,7 @@ import { FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInpu
 export class FundsListComponent {
 	private readonly fundService = inject(FundService);
 	private readonly subscriptionService = inject(SubscriptionService);
+	private readonly toastService = inject(ToastService);
 	
 	readonly funds$ = this.fundService.funds$;
 	readonly subscriptions$ = this.subscriptionService.subscriptions$;
@@ -46,13 +47,14 @@ export class FundsListComponent {
 	}
 
 	onConfirmSubscription(data: SubscribeData): void {
+		const notificationText = data.notificationMethod === 'email' ? 'correo electrónico' : 'SMS';
 		this.subscriptionService
 			.subscribe(data.fund.id, data.fund.minAmount, data.notificationMethod)
 			.subscribe((result) => {
 				if (result.success) {
-					console.log('Suscripción exitosa:', result.message);
+					this.toastService.success('Suscripción exitosa', `Se enviará confirmación por ${notificationText}`);
 				} else {
-					console.error('Error en suscripción:', result.message);
+					this.toastService.error('Error en suscripción', result.message);
 				}
 				this.onCloseModal();
 			});

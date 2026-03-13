@@ -8,3 +8,5 @@ export * from './view-toggle/view-toggle.component';
 export * from './search-input/search-input.component';
 export * from './data-table/data-table.component';
 export * from './subscribe-modal/subscribe-modal.component';
+export * from './toast/toast.component';
+export * from './confirm-modal/confirm-modal.component';

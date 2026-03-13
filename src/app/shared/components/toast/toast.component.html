@@ -1,0 +1,32 @@
+<div class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm">
+	@for (toast of toasts$ | async; track toast.id) {
+		<div 
+			class="flex items-start gap-3 p-4 rounded-lg border shadow-lg animate-slide-in"
+			[class]="getColorClasses(toast.type)"
+		>
+			<svg 
+				class="w-5 h-5 flex-shrink-0 mt-0.5" 
+				[class]="getIconColorClasses(toast.type)"
+				fill="none" 
+				stroke="currentColor" 
+				viewBox="0 0 24 24"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="getIcon(toast.type)"/>
+			</svg>
+			<div class="flex-1">
+				<p class="text-sm font-semibold">{{ toast.title }}</p>
+				@if (toast.message) {
+					<p class="text-sm opacity-80 mt-0.5">{{ toast.message }}</p>
+				}
+			</div>
+			<button 
+				(click)="remove(toast.id)"
+				class="flex-shrink-0 opacity-70 hover:opacity-100 transition-opacity"
+			>
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+				</svg>
+			</button>
+		</div>
+	}
+</div>
