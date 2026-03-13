@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { FundSubscription, NotificationMethod, SubscribeResult, SubscriptionStatus, TransactionType } from '../models';
-import { MESSAGES } from '../constants';
-import { UserService } from './user.service';
-import { TransactionService } from './transaction.service';
+import { FundSubscription, NotificationMethod, SubscribeResult, SubscriptionStatus, TransactionType } from '../../models';
+import { MESSAGES } from '../../constants';
+import { UserService } from '../user/user.service';
+import { TransactionService } from '../transaction/transaction.service';
 
 @Injectable({
 	providedIn: 'root',

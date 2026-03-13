@@ -1,15 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Toast, ToastType } from '../models';
-
-const DEFAULT_DURATION = 4000;
-
-const DEFAULT_TITLES: Record<ToastType, string> = {
-	[ToastType.SUCCESS]: '¡Éxito!',
-	[ToastType.ERROR]: 'Error',
-	[ToastType.INFO]: 'Información',
-	[ToastType.WARNING]: 'Advertencia',
-};
+import { Toast, ToastType } from '../../models';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,7 +13,7 @@ export class ToastService {
 		return `toast-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 	}
 
-	private show(type: ToastType, title: string, message?: string, duration: number = DEFAULT_DURATION): void {
+	private show(type: ToastType, title: string, message?: string, duration: number = 4000): void {
 		const toast: Toast = {
 			id: this.generateId(),
 			type,
