@@ -1,2 +1,2 @@
-export * from './button.directive';
-export * from './input.directive';
+export { ButtonDirective } from './button.directive';
+export { InputDirective } from './input.directive';

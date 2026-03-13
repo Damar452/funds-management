@@ -5,3 +5,4 @@ export * from './transaction.model';
 export * from './view-mode.enum';
 export * from './toast.model';
 export * from './subscribe-data.model';
+export * from './ui.model';

@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../../models';
 
+/**
+ * Servicio para gestionar la información del usuario autenticado.
+ * Mantiene el estado del usuario y su balance actualizado.
+ */
 @Injectable({
 	providedIn: 'root',
 })
@@ -22,6 +26,12 @@ export class UserService {
 		return this.userSubject.getValue();
 	}
 
+	/**
+	 * Actualiza el balance del usuario.
+	 * Se utiliza al suscribirse o cancelar suscripciones a fondos.
+	 * 
+	 * @param newBalance - Nuevo balance a establecer
+	 */
 	updateBalance(newBalance: number): void {
 		const user = this.userSubject.getValue();
 		if (user) {

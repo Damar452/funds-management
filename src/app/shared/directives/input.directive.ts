@@ -1,7 +1,16 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { InputSize } from '@core/models';
 
-export type InputSize = 'sm' | 'md' | 'lg';
-
+/**
+ * Directiva para aplicar estilos consistentes a inputs.
+ * Incluye estilos para estados :focus e :invalid automáticamente.
+ * 
+ * @example
+ * ```html
+ * <input appInput placeholder="Email" />
+ * <input appInput inputSize="lg" />
+ * ```
+ */
 @Directive({
 	selector: '[appInput]',
 	standalone: true,

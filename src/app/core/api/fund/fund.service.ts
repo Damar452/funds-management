@@ -3,6 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Fund } from '../../models';
 
+/**
+ * Servicio para gestionar los fondos de inversión disponibles.
+ * Carga los fondos desde un archivo JSON y proporciona métodos
+ * de búsqueda y consulta.
+ */
 @Injectable({
 	providedIn: 'root',
 })
@@ -26,6 +31,13 @@ export class FundService {
 		return this.fundsSubject.getValue().find((fund) => fund.id === id);
 	}
 
+	/**
+	 * Busca fondos que coincidan con el término de búsqueda.
+	 * La búsqueda es case-insensitive y busca en nombre, descripción y categoría.
+	 * 
+	 * @param term - Término de búsqueda
+	 * @returns Array de fondos que coinciden con el término
+	 */
 	searchFunds(term: string): Fund[] {
 		const funds = this.fundsSubject.getValue();
 		if (!term.trim()) {

@@ -1,8 +1,17 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { ButtonVariant, ButtonSize } from '@core/models';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger' | 'warning' | 'info' | 'ghost';
-export type ButtonSize = 'sm' | 'md' | 'lg';
-
+/**
+ * Directiva para aplicar estilos consistentes a botones.
+ * Centraliza las clases de Tailwind para mantener un diseño uniforme.
+ * 
+ * @example
+ * ```html
+ * <button appButton>Primary (default)</button>
+ * <button appButton="secondary" size="lg">Secondary Large</button>
+ * <button appButton="outline" [fullWidth]="true">Full Width</button>
+ * ```
+ */
 @Directive({
 	selector: '[appButton]',
 	standalone: true,

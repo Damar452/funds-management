@@ -5,6 +5,12 @@ import { MESSAGES } from '../../constants';
 import { UserService } from '../user/user.service';
 import { TransactionService } from '../transaction/transaction.service';
 
+/**
+ * Servicio para gestionar las suscripciones a fondos de inversión.
+ * Maneja la creación, cancelación y consulta de suscripciones,
+ * coordinando con UserService y TransactionService para mantener
+ * la consistencia del balance y el historial de transacciones.
+ */
 @Injectable({
 	providedIn: 'root',
 })
@@ -30,6 +36,30 @@ export class SubscriptionService {
 			.find((sub) => sub.fundId === fundId && sub.status === SubscriptionStatus.ACTIVE);
 	}
 
+	/**
+	 * Crea una nueva suscripción a un fondo de inversión.
+	 * 
+	 * Proceso:
+	 * 1. Valida que el usuario exista y tenga saldo suficiente
+	 * 2. Verifica que no exista una suscripción activa al mismo fondo
+	 * 3. Descuenta el monto del balance del usuario
+	 * 4. Crea la suscripción y registra la transacción
+	 * 
+	 * @param fundId - ID del fondo al que se desea suscribir
+	 * @param amount - Monto a invertir (debe ser >= monto mínimo del fondo)
+	 * @param notificationMethod - Método de notificación preferido (EMAIL o SMS)
+	 * @returns Observable con el resultado de la operación
+	 * 
+	 * @example
+	 * ```typescript
+	 * subscriptionService.subscribe(1, 75000, NotificationMethod.EMAIL)
+	 *   .subscribe(result => {
+	 *     if (result.success) {
+	 *       console.log('Suscripción creada:', result.subscription);
+	 *     }
+	 *   });
+	 * ```
+	 */
 	subscribe(
 		fundId: number,
 		amount: number,
@@ -94,6 +124,28 @@ export class SubscriptionService {
 		});
 	}
 
+	/**
+	 * Cancela una suscripción activa y reintegra el monto al balance del usuario.
+	 * 
+	 * Proceso:
+	 * 1. Valida que el usuario y la suscripción existan
+	 * 2. Verifica que la suscripción no esté ya cancelada
+	 * 3. Reintegra el monto al balance del usuario
+	 * 4. Actualiza el estado de la suscripción y registra la transacción
+	 * 
+	 * @param subscriptionId - ID de la suscripción a cancelar
+	 * @returns Observable con el resultado de la operación
+	 * 
+	 * @example
+	 * ```typescript
+	 * subscriptionService.cancelSubscription(1)
+	 *   .subscribe(result => {
+	 *     if (result.success) {
+	 *       console.log('Suscripción cancelada');
+	 *     }
+	 *   });
+	 * ```
+	 */
 	cancelSubscription(subscriptionId: number): Observable<SubscribeResult> {
 		const user = this.userService.getUser();
 		const subscriptions = this.subscriptionsSubject.getValue();

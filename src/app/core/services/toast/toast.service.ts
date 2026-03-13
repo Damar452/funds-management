@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Toast, ToastType } from '../../models';
 
+/**
+ * Servicio para mostrar notificaciones toast en la aplicación.
+ * Gestiona una cola de toasts con auto-eliminación configurable.
+ */
 @Injectable({
 	providedIn: 'root',
 })
@@ -13,6 +17,14 @@ export class ToastService {
 		return `toast-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 	}
 
+	/**
+	 * Muestra un toast y programa su auto-eliminación.
+	 * 
+	 * @param type - Tipo de toast (success, error, info, warning)
+	 * @param title - Título principal del toast
+	 * @param message - Mensaje descriptivo opcional
+	 * @param duration - Duración en ms antes de auto-eliminar (0 = permanente)
+	 */
 	private show(type: ToastType, title: string, message?: string, duration: number = 4000): void {
 		const toast: Toast = {
 			id: this.generateId(),
