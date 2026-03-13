@@ -1,0 +1,9 @@
+{
+	"id": 1,
+	"name": "Usuario BTG",
+	"email": "usuario@btg.com",
+	"phone": "+57 300 123 4567",
+	"balance": 500000,
+	"createdAt": "2026-01-01T00:00:00.000Z",
+	"updatedAt": "2026-01-01T00:00:00.000Z"
+}

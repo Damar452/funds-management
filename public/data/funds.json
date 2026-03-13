@@ -1,0 +1,47 @@
+[
+	{
+		"id": 1,
+		"name": "FPV_BTG_PACTUAL_RECAUDADORA",
+		"minAmount": 75000,
+		"category": "FPV",
+		"description": "Fondo de pensiones voluntarias con enfoque en recaudo",
+		"createdAt": "2026-01-01T00:00:00.000Z",
+		"updatedAt": "2026-01-01T00:00:00.000Z"
+	},
+	{
+		"id": 2,
+		"name": "FPV_BTG_PACTUAL_ECOPETROL",
+		"minAmount": 125000,
+		"category": "FPV",
+		"description": "Fondo de pensiones voluntarias con inversión en Ecopetrol",
+		"createdAt": "2026-01-01T00:00:00.000Z",
+		"updatedAt": "2026-01-01T00:00:00.000Z"
+	},
+	{
+		"id": 3,
+		"name": "DEUDAPRIVADA",
+		"minAmount": 50000,
+		"category": "FIC",
+		"description": "Fondo de inversión colectiva en deuda privada",
+		"createdAt": "2026-01-01T00:00:00.000Z",
+		"updatedAt": "2026-01-01T00:00:00.000Z"
+	},
+	{
+		"id": 4,
+		"name": "FDO-ACCIONES",
+		"minAmount": 250000,
+		"category": "FIC",
+		"description": "Fondo de inversión colectiva en acciones",
+		"createdAt": "2026-01-01T00:00:00.000Z",
+		"updatedAt": "2026-01-01T00:00:00.000Z"
+	},
+	{
+		"id": 5,
+		"name": "FPV_BTG_PACTUAL_DINAMICA",
+		"minAmount": 100000,
+		"category": "FPV",
+		"description": "Fondo de pensiones voluntarias con estrategia dinámica",
+		"createdAt": "2026-01-01T00:00:00.000Z",
+		"updatedAt": "2026-01-01T00:00:00.000Z"
+	}
+]
