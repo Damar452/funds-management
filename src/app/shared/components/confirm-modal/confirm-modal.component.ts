@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ButtonDirective } from '../../directives';
 
 export type ConfirmModalType = 'danger' | 'warning' | 'info';
 
 @Component({
 	selector: 'app-confirm-modal',
 	standalone: true,
-	imports: [],
+	imports: [ButtonDirective],
 	templateUrl: './confirm-modal.component.html',
 })
 export class ConfirmModalComponent {

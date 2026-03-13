@@ -19,14 +19,17 @@
 				<div class="flex gap-3 w-full">
 					<button 
 						(click)="onCancel()"
-						class="flex-1 px-4 py-3 border border-gray-200 text-text font-medium rounded-lg hover:bg-gray-50 transition-colors"
+						appButton="outline"
+						size="lg"
+						class="flex-1"
 					>
 						{{ cancelText }}
 					</button>
 					<button 
 						(click)="onConfirm()"
-						class="flex-1 px-4 py-3 text-white font-medium rounded-lg transition-opacity"
-						[class]="confirmButtonClasses"
+						[appButton]="type"
+						size="lg"
+						class="flex-1"
 					>
 						{{ confirmText }}
 					</button>

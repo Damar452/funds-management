@@ -3,11 +3,12 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { CurrencyPipe } from '@angular/common';
 import { Fund, SubscribeData } from '@core/models';
 import { notificationMethods } from './subscribe-modal.consts';
+import { ButtonDirective, InputDirective } from '../../directives';
 
 @Component({
 	selector: 'app-subscribe-modal',
 	standalone: true,
-	imports: [ReactiveFormsModule, CurrencyPipe],
+	imports: [ReactiveFormsModule, CurrencyPipe, ButtonDirective, InputDirective],
 	templateUrl: './subscribe-modal.component.html',
 })
 export class SubscribeModalComponent implements OnChanges {

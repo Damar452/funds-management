@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { Fund } from '@core/models';
+import { ButtonDirective } from '../../directives';
 
 @Component({
 	selector: 'app-fund-card',
 	standalone: true,
-	imports: [CurrencyPipe],
+	imports: [CurrencyPipe, ButtonDirective],
 	templateUrl: './fund-card.component.html',
 })
 export class FundCardComponent {

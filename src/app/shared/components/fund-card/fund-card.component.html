@@ -19,8 +19,8 @@
 		<button 
 			(click)="onSubscribe()"
 			[disabled]="isSubscribed"
-			class="w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg transition-opacity flex-shrink-0"
-			[class]="isSubscribed ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-primary text-white hover:opacity-90'"
+			appButton
+			class="w-full sm:w-auto flex-shrink-0"
 		>
 			{{ isSubscribed ? 'Suscrito' : 'Suscribirse' }}
 		</button>
