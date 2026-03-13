@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { FundService, SubscriptionService, ToastService } from '@core';
-import { Fund, ViewMode, NOTIFICATION_METHOD_LABELS } from '@core/models';
-import { FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInputComponent, SubscribeModalComponent, SubscribeData } from '@shared';
+import { Fund, ViewMode, NOTIFICATION_METHOD_LABELS, SubscribeData } from '@core/models';
+import { FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInputComponent, SubscribeModalComponent } from '@shared';
 
 @Component({
 	selector: 'app-funds-list',
@@ -49,7 +49,7 @@ export class FundsListComponent {
 	onConfirmSubscription(data: SubscribeData): void {
 		const notificationText = NOTIFICATION_METHOD_LABELS[data.notificationMethod];
 		this.subscriptionService
-			.subscribe(data.fund.id, data.fund.minAmount, data.notificationMethod)
+			.subscribe(data.fund.id, data.amount, data.notificationMethod)
 			.subscribe((result) => {
 				if (result.success) {
 					this.toastService.success('Suscripción exitosa', `Se enviará confirmación por ${notificationText}`);
