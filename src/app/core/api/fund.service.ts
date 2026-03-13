@@ -25,4 +25,18 @@ export class FundService {
 	getFundById(id: number): Fund | undefined {
 		return this.fundsSubject.getValue().find((fund) => fund.id === id);
 	}
+
+	searchFunds(term: string): Fund[] {
+		const funds = this.fundsSubject.getValue();
+		if (!term.trim()) {
+			return funds;
+		}
+		const lowerTerm = term.toLowerCase();
+		return funds.filter(
+			(fund) =>
+				fund.name.toLowerCase().includes(lowerTerm) ||
+				fund.description.toLowerCase().includes(lowerTerm) ||
+				fund.category.toLowerCase().includes(lowerTerm)
+		);
+	}
 }

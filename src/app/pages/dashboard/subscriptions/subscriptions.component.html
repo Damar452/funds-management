@@ -1,0 +1,50 @@
+<div>
+	<h2 class="text-2xl font-bold text-text mb-6">Mis Suscripciones</h2>
+	
+	@if (subscriptions$ | async; as subscriptions) {
+		@if (subscriptions.length > 0) {
+			<div class="grid gap-4">
+				@for (subscription of subscriptions; track subscription.id) {
+					<div class="bg-white p-6 rounded-xl shadow-sm">
+						<div class="flex items-start justify-between">
+							<div class="flex-1">
+								<div class="flex items-center gap-3 mb-2">
+									<span 
+										class="px-3 py-1 text-xs font-medium rounded-full"
+										[class]="subscription.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'"
+									>
+										{{ subscription.status === 'active' ? 'Activa' : 'Cancelada' }}
+									</span>
+									<h3 class="text-lg font-semibold text-text">{{ getFundName(subscription.fundId) }}</h3>
+								</div>
+								<div class="flex items-center gap-6 text-sm text-text-secondary">
+									<span>Monto: <strong class="text-text">{{ subscription.amount | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></span>
+									<span>Notificación: <strong class="text-text">{{ subscription.notificationMethod === 'email' ? 'Email' : 'SMS' }}</strong></span>
+									<span>Fecha: {{ subscription.createdAt | date:'dd/MM/yyyy' }}</span>
+								</div>
+							</div>
+							@if (subscription.status === 'active') {
+								<button 
+									(click)="cancelSubscription(subscription.id)"
+									class="px-4 py-2 bg-secondary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+								>
+									Cancelar
+								</button>
+							}
+						</div>
+					</div>
+				}
+			</div>
+		} @else {
+			<div class="bg-white p-8 rounded-xl shadow-sm text-center">
+				<p class="text-text-secondary mb-4">No tienes suscripciones activas</p>
+				<a 
+					routerLink="/dashboard/funds"
+					class="inline-block px-6 py-2 bg-primary text-white font-medium rounded-lg hover:opacity-90 transition-opacity"
+				>
+					Ver Fondos Disponibles
+				</a>
+			</div>
+		}
+	}
+</div>

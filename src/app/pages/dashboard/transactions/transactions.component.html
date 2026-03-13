@@ -1,0 +1,23 @@
+<div>
+	<h2 class="text-2xl font-bold text-text mb-6">Historial de Transacciones</h2>
+	
+	@if (transactions$ | async; as transactions) {
+		<app-data-table [columns]="columns" [data]="transactions" trackBy="id" emptyMessage="No hay transacciones registradas">
+			<ng-template #rowTemplate let-transaction>
+				<td class="px-6 py-4">
+					<span 
+						class="px-3 py-1 text-xs font-medium rounded-full"
+						[class]="transaction.type === 'subscription' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+					>
+						{{ transaction.type === 'subscription' ? 'Suscripción' : 'Cancelación' }}
+					</span>
+				</td>
+				<td class="px-6 py-4 text-sm text-text">{{ getFundName(transaction.fundId) }}</td>
+				<td class="px-6 py-4 text-sm font-medium text-text">{{ transaction.amount | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+				<td class="px-6 py-4 text-sm text-text-secondary">{{ transaction.balanceBefore | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+				<td class="px-6 py-4 text-sm text-text-secondary">{{ transaction.balanceAfter | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+				<td class="px-6 py-4 text-sm text-text-secondary">{{ transaction.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+			</ng-template>
+		</app-data-table>
+	}
+</div>

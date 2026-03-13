@@ -1,0 +1,43 @@
+<div>
+	<div class="flex items-center justify-between mb-6">
+		<h2 class="text-2xl font-bold text-text">Todos los Fondos</h2>
+		<div class="flex items-center gap-4">
+			<app-search-input 
+				placeholder="Buscar fondos..." 
+				(search)="onSearch($event)" 
+			/>
+			<app-view-toggle [currentView]="viewMode" (viewChange)="onViewChange($event)" />
+		</div>
+	</div>
+	
+	@if (funds$ | async; as funds) {
+		@let displayFunds = getFundsToDisplay(funds);
+		@if (viewMode === 'cards') {
+			<div class="grid gap-4">
+				@for (fund of displayFunds; track fund.id) {
+					<app-fund-card 
+						[fund]="fund" 
+						[isSubscribed]="isSubscribed(fund.id)"
+						(subscribe)="onSubscribe($event)"
+					/>
+				} @empty {
+					<p class="text-text-secondary text-center py-8">No se encontraron fondos</p>
+				}
+			</div>
+		} @else {
+			@if (displayFunds.length > 0) {
+				<app-funds-table 
+					[funds]="displayFunds" 
+					[subscribedFundIds]="getSubscribedFundIds()"
+					(subscribe)="onSubscribe($event)"
+				/>
+			} @else {
+				<p class="text-text-secondary text-center py-8">No se encontraron fondos</p>
+			}
+		}
+	} @else {
+		<div class="flex justify-center py-8">
+			<p class="text-text-secondary">Cargando fondos...</p>
+		</div>
+	}
+</div>

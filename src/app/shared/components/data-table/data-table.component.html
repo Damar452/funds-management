@@ -1,0 +1,29 @@
+@if (data.length > 0) {
+	<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+		<table class="w-full">
+			<thead class="bg-background">
+				<tr>
+					@for (column of columns; track column.key) {
+						<th 
+							class="px-6 py-3 text-left text-xs font-semibold text-text-secondary uppercase tracking-wider"
+							[style.width]="column.width"
+						>
+							{{ column.header }}
+						</th>
+					}
+				</tr>
+			</thead>
+			<tbody class="divide-y divide-gray-100">
+				@for (item of data; track trackByFn($index, item); let i = $index) {
+					<tr class="hover:bg-gray-50">
+						<ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: item, index: i }" />
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+} @else {
+	<div class="bg-white p-8 rounded-xl shadow-sm text-center">
+		<p class="text-text-secondary">{{ emptyMessage }}</p>
+	</div>
+}
