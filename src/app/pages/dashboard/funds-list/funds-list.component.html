@@ -12,7 +12,7 @@
 	
 	@if (funds$ | async; as funds) {
 		@let displayFunds = getFundsToDisplay(funds);
-		@if (viewMode === 'cards') {
+		@if (viewMode === ViewMode.CARDS) {
 			<div class="grid gap-4">
 				@for (fund of displayFunds; track fund.id) {
 					<app-fund-card 
@@ -41,3 +41,10 @@
 		</div>
 	}
 </div>
+
+<app-subscribe-modal
+	[fund]="selectedFund"
+	[isOpen]="isModalOpen"
+	(close)="onCloseModal()"
+	(confirm)="onConfirmSubscription($event)"
+/>

@@ -1,0 +1,73 @@
+@if (isOpen && fund) {
+	<div class="fixed inset-0 z-50 flex items-center justify-center">
+		<div class="absolute inset-0 bg-black/50" (click)="onClose()"></div>
+		
+		<div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 p-6">
+			<button 
+				(click)="onClose()"
+				class="absolute top-4 right-4 text-text-secondary hover:text-text"
+			>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+				</svg>
+			</button>
+
+			<h2 class="text-xl font-bold text-text mb-4">Suscribirse al Fondo</h2>
+			
+			<div class="mb-6">
+				<div class="flex items-center gap-3 mb-3">
+					<span 
+						class="px-3 py-1 text-xs font-medium rounded-full"
+						[class]="fund.category === 'FPV' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'"
+					>
+						{{ fund.category }}
+					</span>
+					<span class="font-semibold text-text">{{ fund.name }}</span>
+				</div>
+				<p class="text-text-secondary text-sm mb-3">{{ fund.description }}</p>
+				<div class="flex items-center justify-between p-3 bg-background rounded-lg">
+					<span class="text-text-secondary text-sm">Monto a invertir:</span>
+					<span class="font-bold text-primary">{{ fund.minAmount | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+				</div>
+			</div>
+
+			<div class="mb-6">
+				<label class="block text-sm font-medium text-text mb-3">
+					¿Cómo deseas recibir la notificación?
+				</label>
+				<div class="space-y-2">
+					@for (method of notificationMethods; track method.value) {
+						<label 
+							class="flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-colors"
+							[class]="selectedMethod === method.value ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-gray-300'"
+						>
+							<input 
+								type="radio" 
+								name="notificationMethod"
+								[value]="method.value"
+								[(ngModel)]="selectedMethod"
+								class="w-4 h-4 text-primary"
+							/>
+							<span class="text-text">{{ method.label }}</span>
+						</label>
+					}
+				</div>
+			</div>
+
+			<div class="flex gap-3">
+				<button 
+					(click)="onClose()"
+					class="flex-1 px-4 py-3 border border-gray-200 text-text font-medium rounded-lg hover:bg-gray-50 transition-colors"
+				>
+					Cancelar
+				</button>
+				<button 
+					(click)="onConfirm()"
+					class="flex-1 px-4 py-3 bg-primary text-white font-medium rounded-lg hover:opacity-90 transition-opacity"
+				>
+					Confirmar Suscripción
+				</button>
+			</div>
+		</div>
+	</div>
+}

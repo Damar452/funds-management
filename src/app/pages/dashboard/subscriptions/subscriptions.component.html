@@ -1,42 +1,77 @@
 <div>
-	<h2 class="text-2xl font-bold text-text mb-6">Mis Suscripciones</h2>
+	<div class="flex items-center justify-between mb-6">
+		<h2 class="text-2xl font-bold text-text">Mis Suscripciones</h2>
+		<div class="flex items-center gap-4">
+			<app-search-input placeholder="Buscar suscripciones..." (search)="onSearch($event)" />
+			<app-view-toggle [currentView]="viewMode" (viewChange)="onViewChange($event)" />
+		</div>
+	</div>
 	
 	@if (subscriptions$ | async; as subscriptions) {
-		@if (subscriptions.length > 0) {
-			<div class="grid gap-4">
-				@for (subscription of subscriptions; track subscription.id) {
-					<div class="bg-white p-6 rounded-xl shadow-sm">
-						<div class="flex items-start justify-between">
-							<div class="flex-1">
-								<div class="flex items-center gap-3 mb-2">
-									<span 
-										class="px-3 py-1 text-xs font-medium rounded-full"
-										[class]="subscription.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'"
-									>
-										{{ subscription.status === 'active' ? 'Activa' : 'Cancelada' }}
-									</span>
-									<h3 class="text-lg font-semibold text-text">{{ getFundName(subscription.fundId) }}</h3>
+		@let activeSubscriptions = getActiveSubscriptions(subscriptions);
+		@if (activeSubscriptions.length > 0) {
+			@if (viewMode === ViewMode.CARDS) {
+				<div class="grid gap-4">
+					@for (subscription of activeSubscriptions; track subscription.id) {
+						<div class="bg-white p-6 rounded-xl shadow-sm">
+							<div class="flex items-start justify-between">
+								<div class="flex-1">
+									<div class="flex items-center gap-3 mb-2">
+										<span 
+											class="px-3 py-1 text-xs font-medium rounded-full"
+											[class]="getFundCategory(subscription.fundId) === 'FPV' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'"
+										>
+											{{ getFundCategory(subscription.fundId) }}
+										</span>
+										<h3 class="text-lg font-semibold text-text">{{ getFundName(subscription.fundId) }}</h3>
+									</div>
+									<div class="flex items-center gap-6 text-sm text-text-secondary">
+										<span>Monto invertido: <strong class="text-text">{{ subscription.amount | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></span>
+										<span>Notificación: <strong class="text-text">{{ subscription.notificationMethod === 'email' ? 'Email' : 'SMS' }}</strong></span>
+										<span>Fecha: {{ subscription.createdAt | date:'dd/MM/yyyy' }}</span>
+									</div>
 								</div>
-								<div class="flex items-center gap-6 text-sm text-text-secondary">
-									<span>Monto: <strong class="text-text">{{ subscription.amount | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></span>
-									<span>Notificación: <strong class="text-text">{{ subscription.notificationMethod === 'email' ? 'Email' : 'SMS' }}</strong></span>
-									<span>Fecha: {{ subscription.createdAt | date:'dd/MM/yyyy' }}</span>
-								</div>
-							</div>
-							@if (subscription.status === 'active') {
 								<button 
 									(click)="cancelSubscription(subscription.id)"
 									class="px-4 py-2 bg-secondary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
 								>
-									Cancelar
+									Cancelar Suscripción
 								</button>
-							}
+							</div>
 						</div>
-					</div>
-				}
-			</div>
+					}
+				</div>
+			} @else {
+				<app-data-table [columns]="columns" [data]="activeSubscriptions" trackBy="id" emptyMessage="No hay suscripciones">
+					<ng-template #rowTemplate let-subscription>
+						<td class="px-6 py-4">
+							<span 
+								class="px-3 py-1 text-xs font-medium rounded-full"
+								[class]="getFundCategory(subscription.fundId) === 'FPV' ? 'bg-primary/10 text-primary' : 'bg-accent/10 text-accent'"
+							>
+								{{ getFundCategory(subscription.fundId) }}
+							</span>
+						</td>
+						<td class="px-6 py-4 text-sm font-medium text-text">{{ getFundName(subscription.fundId) }}</td>
+						<td class="px-6 py-4 text-sm text-text">{{ subscription.amount | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+						<td class="px-6 py-4 text-sm text-text">{{ subscription.notificationMethod === 'email' ? 'Email' : 'SMS' }}</td>
+						<td class="px-6 py-4 text-sm text-text-secondary">{{ subscription.createdAt | date:'dd/MM/yyyy' }}</td>
+						<td class="px-6 py-4">
+							<button 
+								(click)="cancelSubscription(subscription.id)"
+								class="px-4 py-2 bg-secondary text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+							>
+								Cancelar
+							</button>
+						</td>
+					</ng-template>
+				</app-data-table>
+			}
 		} @else {
 			<div class="bg-white p-8 rounded-xl shadow-sm text-center">
+				<svg class="w-16 h-16 mx-auto text-text-secondary/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+				</svg>
 				<p class="text-text-secondary mb-4">No tienes suscripciones activas</p>
 				<a 
 					routerLink="/dashboard/funds"

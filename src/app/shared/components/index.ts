@@ -7,3 +7,4 @@ export * from './funds-table/funds-table.component';
 export * from './view-toggle/view-toggle.component';
 export * from './search-input/search-input.component';
 export * from './data-table/data-table.component';
+export * from './subscribe-modal/subscribe-modal.component';
