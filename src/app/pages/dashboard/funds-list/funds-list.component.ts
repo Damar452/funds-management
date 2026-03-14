@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 import { FundService, SubscriptionService, ToastService } from '@core';
 import { Fund, ViewMode, NOTIFICATION_METHOD_LABELS, SubscribeData } from '@core/models';
 import { FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInputComponent, SubscribeModalComponent } from '@shared';
@@ -10,10 +11,11 @@ import { FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInpu
 	imports: [AsyncPipe, FundCardComponent, FundsTableComponent, ViewToggleComponent, SearchInputComponent, SubscribeModalComponent],
 	templateUrl: './funds-list.component.html',
 })
-export class FundsListComponent {
+export class FundsListComponent implements OnDestroy {
 	private readonly fundService = inject(FundService);
 	private readonly subscriptionService = inject(SubscriptionService);
 	private readonly toastService = inject(ToastService);
+	private readonly destroy$ = new Subject<void>();
 	
 	readonly funds$ = this.fundService.funds$;
 	readonly subscriptions$ = this.subscriptionService.subscriptions$;
@@ -50,6 +52,7 @@ export class FundsListComponent {
 		const notificationText = NOTIFICATION_METHOD_LABELS[data.notificationMethod];
 		this.subscriptionService
 			.subscribe(data.fund.id, data.amount, data.notificationMethod)
+			.pipe(takeUntil(this.destroy$))
 			.subscribe((result) => {
 				if (result.success) {
 					this.toastService.success('Suscripción exitosa', `Se enviará confirmación por ${notificationText}`);
@@ -74,5 +77,10 @@ export class FundsListComponent {
 			return allFunds;
 		}
 		return this.filteredFunds;
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }

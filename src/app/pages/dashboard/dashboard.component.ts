@@ -1,6 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { HeaderComponent, SidebarComponent } from '@shared';
 import { UserService, FundService } from '@core';
 
@@ -10,11 +11,12 @@ import { UserService, FundService } from '@core';
 	imports: [HeaderComponent, SidebarComponent, AsyncPipe, RouterOutlet],
 	templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 	private readonly userService = inject(UserService);
 	private readonly fundService = inject(FundService);
+	private readonly destroy$ = new Subject<void>();
 	readonly user$ = this.userService.user$;
-	
+
 	isSidebarOpen = false;
 
 	ngOnInit(): void {
@@ -22,8 +24,8 @@ export class DashboardComponent implements OnInit {
 	}
 
 	private loadInitialData(): void {
-		this.userService.loadUser().subscribe();
-		this.fundService.loadFunds().subscribe();
+		this.userService.loadUser().pipe(takeUntil(this.destroy$)).subscribe();
+		this.fundService.loadFunds().pipe(takeUntil(this.destroy$)).subscribe();
 	}
 
 	toggleSidebar(): void {
@@ -32,5 +34,10 @@ export class DashboardComponent implements OnInit {
 
 	closeSidebar(): void {
 		this.isSidebarOpen = false;
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }

@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { AsyncPipe, CurrencyPipe, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { SubscriptionService, FundService, ToastService } from '@core';
 import { FundSubscription, SubscriptionStatus, ViewMode, NOTIFICATION_METHOD_LABELS } from '@core/models';
 import { SearchInputComponent, ViewToggleComponent, DataTableComponent, TableColumn, ConfirmModalComponent } from '@shared';
@@ -12,10 +13,11 @@ import { SUBSCRIPTIONS_TABLE_COLUMNS } from './subscriptions.consts';
 	imports: [AsyncPipe, CurrencyPipe, DatePipe, RouterLink, SearchInputComponent, ViewToggleComponent, DataTableComponent, ConfirmModalComponent],
 	templateUrl: './subscriptions.component.html',
 })
-export class SubscriptionsComponent {
+export class SubscriptionsComponent implements OnDestroy {
 	private readonly subscriptionService = inject(SubscriptionService);
 	private readonly fundService = inject(FundService);
 	private readonly toastService = inject(ToastService);
+	private readonly destroy$ = new Subject<void>();
 	
 	readonly subscriptions$ = this.subscriptionService.subscriptions$;
 	readonly SubscriptionStatus = SubscriptionStatus;
@@ -76,13 +78,20 @@ export class SubscriptionsComponent {
 		
 		const notificationText = NOTIFICATION_METHOD_LABELS[this.subscriptionToCancel.notificationMethod];
 		
-		this.subscriptionService.cancelSubscription(this.subscriptionToCancel.id).subscribe((result) => {
-			if (result.success) {
-				this.toastService.success('Cancelación exitosa', `Se enviará confirmación por ${notificationText}`);
-			} else {
-				this.toastService.error('Error en cancelación', result.message);
-			}
-			this.closeCancelModal();
-		});
+		this.subscriptionService.cancelSubscription(this.subscriptionToCancel.id)
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((result) => {
+				if (result.success) {
+					this.toastService.success('Cancelación exitosa', `Se enviará confirmación por ${notificationText}`);
+				} else {
+					this.toastService.error('Error en cancelación', result.message);
+				}
+				this.closeCancelModal();
+			});
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }
