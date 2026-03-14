@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { APP_BASE_HREF } from '@angular/common';
 import { FundService } from './fund.service';
 import { MOCK_FUNDS } from '@testing';
 
@@ -14,7 +13,6 @@ describe('FundService', () => {
 			providers: [
 				provideHttpClient(),
 				provideHttpClientTesting(),
-				{ provide: APP_BASE_HREF, useValue: '/' },
 				FundService,
 			],
 		});
@@ -36,7 +34,7 @@ describe('FundService', () => {
 				expect(funds).toEqual(MOCK_FUNDS);
 			});
 
-			const req = httpMock.expectOne('/data/funds.json');
+			const req = httpMock.expectOne('./assets/data/funds.json');
 			expect(req.request.method).toBe('GET');
 			req.flush(MOCK_FUNDS);
 		});
@@ -45,7 +43,7 @@ describe('FundService', () => {
 	describe('getFundById', () => {
 		it('should return fund when id exists', () => {
 			service.loadFunds().subscribe();
-			const req = httpMock.expectOne('/data/funds.json');
+			const req = httpMock.expectOne('./assets/data/funds.json');
 			req.flush(MOCK_FUNDS);
 
 			const fund = service.getFundById(1);
@@ -55,7 +53,7 @@ describe('FundService', () => {
 
 		it('should return undefined when id does not exist', () => {
 			service.loadFunds().subscribe();
-			const req = httpMock.expectOne('/data/funds.json');
+			const req = httpMock.expectOne('./assets/data/funds.json');
 			req.flush(MOCK_FUNDS);
 
 			const fund = service.getFundById(999);
@@ -66,7 +64,7 @@ describe('FundService', () => {
 	describe('searchFunds', () => {
 		it('should find funds by name', () => {
 			service.loadFunds().subscribe();
-			const req = httpMock.expectOne('/data/funds.json');
+			const req = httpMock.expectOne('./assets/data/funds.json');
 			req.flush(MOCK_FUNDS);
 
 			const results = service.searchFunds('ECOPETROL');
@@ -76,7 +74,7 @@ describe('FundService', () => {
 
 		it('should find funds by category', () => {
 			service.loadFunds().subscribe();
-			const req = httpMock.expectOne('/data/funds.json');
+			const req = httpMock.expectOne('./assets/data/funds.json');
 			req.flush(MOCK_FUNDS);
 
 			const results = service.searchFunds('FIC');
@@ -86,7 +84,7 @@ describe('FundService', () => {
 
 		it('should be case insensitive', () => {
 			service.loadFunds().subscribe();
-			const req = httpMock.expectOne('/data/funds.json');
+			const req = httpMock.expectOne('./assets/data/funds.json');
 			req.flush(MOCK_FUNDS);
 
 			const results = service.searchFunds('fpv');
@@ -95,7 +93,7 @@ describe('FundService', () => {
 
 		it('should return empty array when no matches', () => {
 			service.loadFunds().subscribe();
-			const req = httpMock.expectOne('/data/funds.json');
+			const req = httpMock.expectOne('./assets/data/funds.json');
 			req.flush(MOCK_FUNDS);
 
 			const results = service.searchFunds('xyz123');
