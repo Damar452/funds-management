@@ -67,8 +67,8 @@ describe('TransactionsComponent', () => {
 	});
 
 	describe('initial state', () => {
-		it('should have default viewMode as TABLE', () => {
-			expect(component.viewMode).toBe(ViewMode.TABLE);
+		it('should have default viewMode as TIMELINE', () => {
+			expect(component.viewMode).toBe(ViewMode.TIMELINE);
 		});
 
 		it('should have empty searchTerm', () => {
