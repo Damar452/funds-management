@@ -39,21 +39,29 @@ describe('SubscriptionService', () => {
 	});
 
 	describe('subscribe', () => {
-		it('should fail if user is not found', () => {
+		it('should throw error if user is not found', (done) => {
 			userServiceSpy.getUser.and.returnValue(null);
 
-			service.subscribe(1, 75000, NotificationMethod.EMAIL).subscribe((result) => {
-				expect(result.success).toBeFalse();
-				expect(result.message).toBeDefined();
+			service.subscribe(1, 75000, NotificationMethod.EMAIL).subscribe({
+				next: () => fail('should have thrown error'),
+				error: (error) => {
+					expect(error).toBeInstanceOf(Error);
+					expect(error.message).toBeDefined();
+					done();
+				},
 			});
 		});
 
-		it('should fail if insufficient balance', () => {
+		it('should throw error if insufficient balance', (done) => {
 			userServiceSpy.getUser.and.returnValue({ ...MOCK_USER, balance: 50000 });
 
-			service.subscribe(1, 75000, NotificationMethod.EMAIL).subscribe((result) => {
-				expect(result.success).toBeFalse();
-				expect(result.message).toBeDefined();
+			service.subscribe(1, 75000, NotificationMethod.EMAIL).subscribe({
+				next: () => fail('should have thrown error'),
+				error: (error) => {
+					expect(error).toBeInstanceOf(Error);
+					expect(error.message).toBeDefined();
+					done();
+				},
 			});
 		});
 
@@ -72,31 +80,43 @@ describe('SubscriptionService', () => {
 			expect(transactionServiceSpy.addTransaction).toHaveBeenCalled();
 		});
 
-		it('should fail if already subscribed to fund', () => {
+		it('should throw error if already subscribed to fund', (done) => {
 			userServiceSpy.getUser.and.returnValue(MOCK_USER);
 
 			service.subscribe(1, 75000, NotificationMethod.EMAIL).subscribe();
 
-			service.subscribe(1, 75000, NotificationMethod.EMAIL).subscribe((result) => {
-				expect(result.success).toBeFalse();
+			service.subscribe(1, 75000, NotificationMethod.EMAIL).subscribe({
+				next: () => fail('should have thrown error'),
+				error: (error) => {
+					expect(error).toBeInstanceOf(Error);
+					done();
+				},
 			});
 		});
 	});
 
 	describe('cancelSubscription', () => {
-		it('should fail if user is not found', () => {
+		it('should throw error if user is not found', (done) => {
 			userServiceSpy.getUser.and.returnValue(null);
 
-			service.cancelSubscription(1).subscribe((result) => {
-				expect(result.success).toBeFalse();
+			service.cancelSubscription(1).subscribe({
+				next: () => fail('should have thrown error'),
+				error: (error) => {
+					expect(error).toBeInstanceOf(Error);
+					done();
+				},
 			});
 		});
 
-		it('should fail if subscription does not exist', () => {
+		it('should throw error if subscription does not exist', (done) => {
 			userServiceSpy.getUser.and.returnValue(MOCK_USER);
 
-			service.cancelSubscription(999).subscribe((result) => {
-				expect(result.success).toBeFalse();
+			service.cancelSubscription(999).subscribe({
+				next: () => fail('should have thrown error'),
+				error: (error) => {
+					expect(error).toBeInstanceOf(Error);
+					done();
+				},
 			});
 		});
 

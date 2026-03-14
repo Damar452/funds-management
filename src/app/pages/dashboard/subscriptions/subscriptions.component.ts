@@ -80,13 +80,15 @@ export class SubscriptionsComponent implements OnDestroy {
 		
 		this.subscriptionService.cancelSubscription(this.subscriptionToCancel.id)
 			.pipe(takeUntil(this.destroy$))
-			.subscribe((result) => {
-				if (result.success) {
+			.subscribe({
+				next: () => {
 					this.toastService.success('Cancelación exitosa', `Se enviará confirmación por ${notificationText}`);
-				} else {
-					this.toastService.error('Error en cancelación', result.message);
-				}
-				this.closeCancelModal();
+					this.closeCancelModal();
+				},
+				error: (error: Error) => {
+					this.toastService.error('Error en cancelación', error.message);
+					this.closeCancelModal();
+				},
 			});
 	}
 

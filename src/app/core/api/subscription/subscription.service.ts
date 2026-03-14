@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { FundSubscription, NotificationMethod, SubscribeResult, SubscriptionStatus, TransactionType } from '../../models';
 import { MESSAGES } from '../../constants';
 import { UserService } from '../user/user.service';
@@ -68,22 +68,16 @@ export class SubscriptionService {
 		const user = this.userService.getUser();
 
 		if (!user) {
-			return of({ success: false, message: MESSAGES.ERROR.USER_NOT_FOUND });
+			return throwError(() => new Error(MESSAGES.ERROR.USER_NOT_FOUND));
 		}
 
 		if (user.balance < amount) {
-			return of({
-				success: false,
-				message: MESSAGES.ERROR.INSUFFICIENT_BALANCE(user.balance),
-			});
+			return throwError(() => new Error(MESSAGES.ERROR.INSUFFICIENT_BALANCE(user.balance)));
 		}
 
 		const existingSubscription = this.getSubscriptionByFundId(fundId);
 		if (existingSubscription) {
-			return of({
-				success: false,
-				message: MESSAGES.ERROR.SUBSCRIPTION_ALREADY_EXISTS,
-			});
+			return throwError(() => new Error(MESSAGES.ERROR.SUBSCRIPTION_ALREADY_EXISTS));
 		}
 
 		const now = new Date().toISOString();
@@ -152,15 +146,15 @@ export class SubscriptionService {
 		const subscription = subscriptions.find((sub) => sub.id === subscriptionId);
 
 		if (!user) {
-			return of({ success: false, message: MESSAGES.ERROR.USER_NOT_FOUND });
+			return throwError(() => new Error(MESSAGES.ERROR.USER_NOT_FOUND));
 		}
 
 		if (!subscription) {
-			return of({ success: false, message: MESSAGES.ERROR.SUBSCRIPTION_NOT_FOUND });
+			return throwError(() => new Error(MESSAGES.ERROR.SUBSCRIPTION_NOT_FOUND));
 		}
 
 		if (subscription.status === SubscriptionStatus.CANCELLED) {
-			return of({ success: false, message: MESSAGES.ERROR.SUBSCRIPTION_ALREADY_CANCELLED });
+			return throwError(() => new Error(MESSAGES.ERROR.SUBSCRIPTION_ALREADY_CANCELLED));
 		}
 
 		const now = new Date().toISOString();

@@ -3,7 +3,7 @@ import { FundsListComponent } from './funds-list.component';
 import { FundService, SubscriptionService, ToastService } from '@core';
 import { ViewMode, NotificationMethod } from '@core/models';
 import { MOCK_FUNDS } from '@testing';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 
 describe('FundsListComponent', () => {
 	let component: FundsListComponent;
@@ -108,7 +108,7 @@ describe('FundsListComponent', () => {
 		});
 
 		it('should show error toast on failed subscription', () => {
-			subscriptionServiceSpy.subscribe.and.returnValue(of({ success: false, message: 'Error' }));
+			subscriptionServiceSpy.subscribe.and.returnValue(throwError(() => new Error('Error de prueba')));
 
 			component.onConfirmSubscription({
 				fund: MOCK_FUNDS[0],

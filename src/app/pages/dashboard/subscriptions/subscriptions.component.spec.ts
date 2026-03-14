@@ -4,7 +4,7 @@ import { SubscriptionsComponent } from './subscriptions.component';
 import { SubscriptionService, FundService, ToastService } from '@core';
 import { ViewMode, SubscriptionStatus, NotificationMethod } from '@core/models';
 import { MOCK_FUNDS, MOCK_SUBSCRIPTIONS } from '@testing';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 
 describe('SubscriptionsComponent', () => {
 	let component: SubscriptionsComponent;
@@ -134,7 +134,7 @@ describe('SubscriptionsComponent', () => {
 
 		it('should show error toast on failed cancellation', () => {
 			component.subscriptionToCancel = MOCK_SUBSCRIPTIONS[0];
-			subscriptionServiceSpy.cancelSubscription.and.returnValue(of({ success: false, message: 'Error' }));
+			subscriptionServiceSpy.cancelSubscription.and.returnValue(throwError(() => new Error('Error de prueba')));
 
 			component.confirmCancelSubscription();
 

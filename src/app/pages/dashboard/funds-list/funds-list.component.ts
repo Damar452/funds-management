@@ -53,13 +53,15 @@ export class FundsListComponent implements OnDestroy {
 		this.subscriptionService
 			.subscribe(data.fund.id, data.amount, data.notificationMethod)
 			.pipe(takeUntil(this.destroy$))
-			.subscribe((result) => {
-				if (result.success) {
+			.subscribe({
+				next: () => {
 					this.toastService.success('Suscripción exitosa', `Se enviará confirmación por ${notificationText}`);
-				} else {
-					this.toastService.error('Error en suscripción', result.message);
-				}
-				this.onCloseModal();
+					this.onCloseModal();
+				},
+				error: (error: Error) => {
+					this.toastService.error('Error en suscripción', error.message);
+					this.onCloseModal();
+				},
 			});
 	}
 
