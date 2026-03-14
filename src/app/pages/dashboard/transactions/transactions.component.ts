@@ -18,7 +18,7 @@ export class TransactionsComponent {
 	readonly TransactionType = TransactionType;
 	
 	searchTerm = '';
-	viewMode: ViewMode = ViewMode.TABLE;
+	viewMode: ViewMode = ViewMode.TIMELINE;
 	readonly ViewMode = ViewMode;
 
 	readonly columns: TableColumn[] = [
